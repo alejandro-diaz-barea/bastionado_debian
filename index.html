@@ -54,7 +54,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="1. Ocultar el menú de arranque de un equipo Linux" duration="0">
+      <google-codelab-step label="Ocultar el menú de arranque de un equipo Linux" duration="0">
         <p>Ocultar el menú de arranque es una medida de seguridad que ayuda a evitar que usuarios no autorizados puedan acceder a opciones avanzadas del sistema durante el inicio. Al ocultar el menú, se minimizan las oportunidades de manipulación del arranque y se incrementa la protección contra accesos no deseados.</p>
 <p>Para poder ocultar el menú de arranque, debemos acceder al archivo <code>/etc/default/grub</code>, pero primero es necesario acceder como root con: <code>su root</code>.</p>
 <p class="image-container"><img src="img/8d2ccf277fb615bf.png"></p>
@@ -64,7 +64,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="2. Configurar la contraseña para modificar el arranque" duration="0">
+      <google-codelab-step label="Configurar la contraseña para modificar el arranque" duration="0">
         <p>Configurar una contraseña para modificar el arranque es esencial para evitar que usuarios no autorizados puedan cambiar la configuración del gestor de arranque y obtener acceso no deseado al sistema. Esta medida de seguridad añade una capa adicional de protección, garantizando que solo los usuarios con la contraseña adecuada puedan realizar modificaciones críticas en el arranque.</p>
 <p>Mientras seguimos siendo superusuario, vamos a generar una contraseña con <code>grub-mkpasswd-pbkdf2</code> y copiar el hash que se ha generado.</p>
 <p class="image-container"><img alt="a" src="img/300457b6fe78d1a2.png"></p>
@@ -80,7 +80,7 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.23829CDD2030284510A0C2AFE6E0242081
 
       </google-codelab-step>
     
-      <google-codelab-step label="3. Crear una copia de seguridad de la configuración del arranque" duration="0">
+      <google-codelab-step label="Crear una copia de seguridad de la configuración del arranque" duration="0">
         <p>Hacer una copia de seguridad de la configuración del arranque es fundamental para protegerse contra posibles errores de configuración o fallos en el sistema que podrían dejar el equipo inoperativo. Con una copia de seguridad, es posible restaurar rápidamente la configuración original y asegurar que el sistema pueda volver a funcionar correctamente sin pérdida de información crítica.</p>
 <p>Para poder realizarla vamos a seguir estos comandos :</p>
 <p class="image-container"><img src="img/3521357d961f09f6.png"></p>
