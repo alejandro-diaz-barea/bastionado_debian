@@ -1,0 +1,100 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>1. Introducción</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="bastionado_0"
+                  title="1. Introducción"
+                  environment="web"
+                  feedback-link="https://github.com/alejandro-diaz-barea/bastionado_debian">
+    
+      <google-codelab-step label="Requisitos previos" duration="0">
+        <p>Para realizar este manual de bastionado del arranque de la máquina Debian, he usado una máquina virtual con los requisitos mínimos necesarios para completar el proceso.</p>
+<h2 is-upgraded>1: Iniciar el instalador de Debian</h2>
+<p class="image-container"><img alt="instalar" src="img/61ac5c9d182280.png"></p>
+<ol type="1">
+<li>Arranca la máquina virtual y selecciona la opción <code>Graphical install</code> para iniciar el instalador gráfico de Debian.</li>
+<li>Esta opción proporciona una interfaz amigable y facilita el proceso de instalación.</li>
+</ol>
+<h2 is-upgraded>2: Seleccionar el cargador de arranque GRUB</h2>
+<p class="image-container"><img alt="Foto2" src="img/cbdcf4ca40de17ac.png"></p>
+<ol type="1">
+<li>Durante el proceso de instalación, elige la opción <code>Instalando el cargador de arranque GRUB</code>.</li>
+<li>Esto instalará GRUB, el gestor de arranque, necesario para que el sistema pueda iniciar correctamente después de la instalación.</li>
+<li>Selecciona el disco en el cual deseas instalar GRUB y continúa con el proceso.</li>
+</ol>
+<h2 is-upgraded>3: Configurar usuarios y contraseñas</h2>
+<p class="image-container"><img alt="Foto3" src="img/c37d344f9abe8e95.png"></p>
+<ol type="1">
+<li>En esta pantalla, se te pedirá configurar una contraseña para el usuario root, que es el administrador del sistema.</li>
+<li>Ingresa una contraseña segura y luego confírmala. Esta contraseña protegerá el acceso de administración.</li>
+<li>Asegúrate de recordar esta contraseña, ya que es esencial para tareas administrativas.</li>
+</ol>
+<p>3. Bastionado de GRUB en la máquina Debian</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="1. Ocultar el menú de arranque de un equipo Linux" duration="0">
+        <p>Ocultar el menú de arranque es una medida de seguridad que ayuda a evitar que usuarios no autorizados puedan acceder a opciones avanzadas del sistema durante el inicio. Al ocultar el menú, se minimizan las oportunidades de manipulación del arranque y se incrementa la protección contra accesos no deseados.</p>
+<p>Para poder ocultar el menú de arranque, debemos acceder al archivo <code>/etc/default/grub</code>, pero primero es necesario acceder como root con: <code>su root</code>.</p>
+<p class="image-container"><img src="img/8d2ccf277fb615bf.png"></p>
+<p>Una vez que seamos superusuario, con el comando <code>nano /etc/default/grub</code> podemos entrar al archivo de configuración de GRUB. <img src="img/fbbf2ebfc54a22cc.png"></p>
+<p>Si nos fijamos en la segunda línea no comentada, el menú de arranque está configurado para mostrarse durante 5 segundos por defecto. Si cambiamos ese parámetro a cero, se oculta el menú de arranque. <img src="img/12b3de79c68d6c8b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="2. Configurar la contraseña para modificar el arranque" duration="0">
+        <p>Configurar una contraseña para modificar el arranque es esencial para evitar que usuarios no autorizados puedan cambiar la configuración del gestor de arranque y obtener acceso no deseado al sistema. Esta medida de seguridad añade una capa adicional de protección, garantizando que solo los usuarios con la contraseña adecuada puedan realizar modificaciones críticas en el arranque.</p>
+<p>Mientras seguimos siendo superusuario, vamos a generar una contraseña con <code>grub-mkpasswd-pbkdf2</code> y copiar el hash que se ha generado.</p>
+<p class="image-container"><img alt="a" src="img/300457b6fe78d1a2.png"></p>
+<p>Una vez creada esta contraseña, accedemos al archivo <code>/etc/grub.d/40_custom</code> usando, por ejemplo, <code>nano</code> y añadimos estos dos parámetros:</p>
+<pre><code language="language-bash" class="language-bash">set superusers=&#34;root&#34;
+
+password_pbkdf2 root grub.pbkdf2.sha512.10000.23829CDD2030284510A0C2AFE6E02420813AAF0CD59B08E986D7DA0F7A0E0BFC630CCAAE107ED5D289A51439305AD534BFD0DC34BD0ABC22635DC73F30E122BD514D06ABCEA974E5C55FE359AF18DC61092A7A9630442CEDE219ABF504888021362F3B6D029F4FCDF5D4415BF1BAF0EDAC9ED9F5FE393AB8419029D1
+
+</code></pre>
+<p>El password sustituyelo por la contraseña generada.</p>
+<p class="image-container"><img src="img/53e27e414c013d3.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="3. Crear una copia de seguridad de la configuración del arranque" duration="0">
+        <p>Hacer una copia de seguridad de la configuración del arranque es fundamental para protegerse contra posibles errores de configuración o fallos en el sistema que podrían dejar el equipo inoperativo. Con una copia de seguridad, es posible restaurar rápidamente la configuración original y asegurar que el sistema pueda volver a funcionar correctamente sin pérdida de información crítica.</p>
+<p>Para poder realizarla vamos a seguir estos comandos :</p>
+<p class="image-container"><img src="img/3521357d961f09f6.png"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

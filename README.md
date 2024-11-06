@@ -1,1 +1,0 @@
-# bastionado_debian
